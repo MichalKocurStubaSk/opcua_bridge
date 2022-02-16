@@ -5,6 +5,7 @@ import numpy as np
 from std_msgs.msg import Int16
 from std_msgs.msg import Int32
 from std_msgs.msg import Int64
+from std_msgs.msg import Float64MultiArray
 from opcua import Client
 from opcua import ua
 
@@ -35,7 +36,7 @@ def listener():
     # run simultaneously.
     rospy.init_node('listener', anonymous=True)
 
-    rospy.Subscriber("dummypub", Int16, callback)
+    rospy.Subscriber("ref_speed_steer", Float64MultiArray, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
