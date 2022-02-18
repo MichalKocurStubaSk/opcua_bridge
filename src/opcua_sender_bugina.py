@@ -8,23 +8,24 @@ from std_msgs.msg import Int64
 from std_msgs.msg import Float64MultiArray
 from opcua import Client
 from opcua import ua
+import math
 
 
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %d", data.data)
-
+    #rospy.loginfo(rospy.get_caller_id() + "I heard %d", data.data)
+    #print ("uhol rad: "+str(data.data[0])+" rychlost:"+str(data.data[1]))
     speedClient = client.get_node("ns=6;s=::AsGlobalPV:Speed_Car_ref")
-    speedClient.set_value(ua.Variant([float(0.0)], ua.VariantType.Float))
+    speedClient.set_value(ua.Variant([float(data.data[1])], ua.VariantType.Float))
     
     
     brakeClient = client.get_node("ns=6;s=::AsGlobalPV:BrakeLevel")
     brakeClient.set_value(ua.Variant([np.int16(0)], ua.VariantType.Int16))
 
     fiClient = client.get_node("ns=6;s=::AsGlobalPV:Fi_Volant_ref")
-    fiClient.set_value(ua.Variant([float(0)], ua.VariantType.Float))
+    fiClient.set_value(ua.Variant([float((data.data[0]))], ua.VariantType.Float))
 
     timeClient = client.get_node("ns=6;s=::AsGlobalPV:Cas_ROS")
-    timeClient.set_value(ua.Variant([np.int32(rospy.get_rostime().secs)], ua.VariantType.Int32))
+    timeClient.set_value(ua.Variant([np.int32(rospy.get_rostime().nsecs)], ua.VariantType.Int32))
 
     
 def listener():
