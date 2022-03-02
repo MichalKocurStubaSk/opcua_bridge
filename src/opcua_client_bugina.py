@@ -11,7 +11,7 @@ sys.path.insert(0, "..")
 def talker():
     pub = rospy.Publisher('PLCreadpub', Float32MultiArray, queue_size=10)
     rospy.init_node('plcreadpub', anonymous=True)
-    rate = rospy.Rate(10)  # 10hz
+    rate = rospy.Rate(100)  # 10hz
     while not rospy.is_shutdown():
         var = client.get_node("ns=6;s=::AsGlobalPV:Fi_Volant_act")
         Fi_Volant_act = var.get_value()  # get value of node as a python builtin
@@ -22,15 +22,17 @@ def talker():
         var = client.get_node("ns=6;s=::AsGlobalPV:Speed_Wheel_Right")
         Speed_Wheel_Right = var.get_value()  # get value of node as a python builtin
 
-        #var = client.get_node("ns=6;s=::AsGlobalPV:PLC_Ros_Time_Nsecs")
-        #PLC_Ros_Time_Nsecs = var.get_value()  # get value of node as a python builtin
+        var = client.get_node("ns=6;s=::AsGlobalPV:PLC_Ros_Time_Nsecs")
+        PLC_Ros_Time_Nsecs = var.get_value()  # get value of node as a python builtin
 
 
         #hello_str = "hello world %s" % rospy.get_time()
-        rospy.loginfo(Fi_Volant_act)
-        rospy.loginfo(Speed_Wheel_Left )
-        rospy.loginfo(Speed_Wheel_Right)
-        #print("PLC-ROS master echo nsecs diff:"+str(rospy.get_rostime().nsecs-PLC_Ros_Time_Nsecs))
+        #rospy.loginfo(Fi_Volant_act)
+        #rospy.loginfo(Speed_Wheel_Left )
+        #rospy.loginfo(Speed_Wheel_Right)
+        #print("rostime Nsec:"+str((rospy.get_rostime().nsecs)/1000000.0))
+        #print("PLCtime:"+str((PLC_Ros_Time_Nsecs)/1000000.0))
+        print("PLC-ROS master echo nsecs diff:"+str((rospy.get_rostime().nsecs-PLC_Ros_Time_Nsecs)/1000000.0))
         pub.publish(Float32MultiArray(data=[Fi_Volant_act,Speed_Wheel_Left,Speed_Wheel_Right]))
         rate.sleep()
 
