@@ -13,7 +13,7 @@ import math
 
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + "I heard %d", data.data)
-    #print ("uhol rad: "+str(data.data[0])+" rychlost:"+str(data.data[1]))
+    print ("uhol rad: "+str(data.data[0])+" rychlost:"+str(data.data[1]))
     speedClient = client.get_node("ns=6;s=::AsGlobalPV:Speed_Car_ref")
     speedClient.set_value(ua.Variant([float(data.data[1])], ua.VariantType.Float))
     
