@@ -25,6 +25,8 @@ def talker():
         var = client.get_node("ns=6;s=::AsGlobalPV:PLC_Ros_Time_Nsecs")
         PLC_Ros_Time_Nsecs = var.get_value()  # get value of node as a python builtin
 
+        var = client.get_node("ns=6;s=::AsGlobalPV:Speed_Shaft")
+        Speed_Shaft = var.get_value()  # get value of node as a python builtin
 
         #hello_str = "hello world %s" % rospy.get_time()
         #rospy.loginfo(Fi_Volant_act)
@@ -33,7 +35,7 @@ def talker():
         #print("rostime Nsec:"+str((rospy.get_rostime().nsecs)/1000000.0))
         #print("PLCtime:"+str((PLC_Ros_Time_Nsecs)/1000000.0))
         print("PLC-ROS master echo nsecs diff:"+str((rospy.get_rostime().nsecs-PLC_Ros_Time_Nsecs)/1000000.0))
-        pub.publish(Float32MultiArray(data=[Fi_Volant_act,Speed_Wheel_Left,Speed_Wheel_Right]))
+        pub.publish(Float32MultiArray(data=[Fi_Volant_act,Speed_Wheel_Left,Speed_Wheel_Right,Speed_Shaft]))
         rate.sleep()
 
 
